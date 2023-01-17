@@ -1445,9 +1445,10 @@ GameObject:
   - component: {fileID: 176705891}
   - component: {fileID: 1456883909}
   - component: {fileID: 1456883910}
+  - component: {fileID: 1456883914}
   m_Layer: 0
   m_Name: Rocket
-  m_TagString: Untagged
+  m_TagString: Finish
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1498,8 +1499,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MainThrust: 750
   RotationThrust: 100
-  MainThruster: {fileID: 8300000, guid: 3ccb724fc710f444e84e269d937907be, type: 3}
-  AuxiliaryThruster: {fileID: 8300000, guid: dbc36824f06f3fd408885cb99c9b5acb, type: 3}
+  MainThruster: {fileID: 8300000, guid: 7c1bc3e56a0f50c4f8793bcffaa578d0, type: 3}
+  AuxiliaryThruster: {fileID: 8300000, guid: 594040a427ddd4646a05ed0a27b77f1a, type: 3}
 --- !u!54 &176705891
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1708,6 +1709,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1456883914
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5136997824475320957}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f89ac962f1b8d65449cb7957e03d8f18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SceneResetTimer: 3
 --- !u!1 &8337611720166069405
 GameObject:
   m_ObjectHideFlags: 0

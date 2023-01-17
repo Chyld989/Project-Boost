@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Movement : MonoBehaviour {
+	[Header("Rocket Control Speed")]
 	[SerializeField] float MainThrust = 750f;
 	[SerializeField] float RotationThrust = 100f;
 
-	[SerializeField] AudioClip MainThruster;
-	[SerializeField] AudioClip AuxiliaryThruster;
+	[Header("Sound Effects")]
+	[SerializeField] AudioClip MainThruster = null;
+	[SerializeField] AudioClip AuxiliaryThruster = null;
+
+	bool HaveControl = true;
 
 	Rigidbody Rigidbody;
 	RigidbodyConstraints RigidbodyConstraints;
@@ -32,7 +36,16 @@ public class Movement : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update() {
-		ProcessInput();
+		if (HaveControl) {
+			ProcessInput();
+		} else {
+			if (AudioSourceMainThruster.isPlaying) {
+				AudioSourceMainThruster.volume = 0f;
+			}
+			if (AudioSourceAuxiliaryThruster.isPlaying) {
+				AudioSourceAuxiliaryThruster.volume = 0f;
+			}
+		}
 	}
 
 	void ProcessInput() {
@@ -78,5 +91,9 @@ public class Movement : MonoBehaviour {
 		transform.Rotate(Vector3.forward * rotationThrust * Time.deltaTime);
 		// Re-enable physics based rotation
 		Rigidbody.constraints = RigidbodyConstraints;
+	}
+
+	public void RemovePlayerControl() {
+		HaveControl = false;
 	}
 }
