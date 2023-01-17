@@ -467,9 +467,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5136997824475320956, guid: a30aa6bbede2aaf45b8e7cc946112bad, type: 3}
+      propertyPath: MainThruster
+      value: 
+      objectReference: {fileID: 8300000, guid: 7c1bc3e56a0f50c4f8793bcffaa578d0, type: 3}
+    - target: {fileID: 5136997824475320956, guid: a30aa6bbede2aaf45b8e7cc946112bad, type: 3}
+      propertyPath: AuxiliaryThruster
+      value: 
+      objectReference: {fileID: 8300000, guid: 594040a427ddd4646a05ed0a27b77f1a, type: 3}
     - target: {fileID: 5136997824475320957, guid: a30aa6bbede2aaf45b8e7cc946112bad, type: 3}
       propertyPath: m_Name
       value: Rocket
+      objectReference: {fileID: 0}
+    - target: {fileID: 5136997824475320957, guid: a30aa6bbede2aaf45b8e7cc946112bad, type: 3}
+      propertyPath: m_TagString
+      value: Finish
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a30aa6bbede2aaf45b8e7cc946112bad, type: 3}
@@ -535,6 +547,10 @@ PrefabInstance:
     - target: {fileID: 552047636108989983, guid: 746c373d6899e884e83bcf79c4cf7c64, type: 3}
       propertyPath: m_Name
       value: Launch Pad
+      objectReference: {fileID: 0}
+    - target: {fileID: 552047636108989983, guid: 746c373d6899e884e83bcf79c4cf7c64, type: 3}
+      propertyPath: m_TagString
+      value: Friendly
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 746c373d6899e884e83bcf79c4cf7c64, type: 3}
