@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 public class CollisionHandler : MonoBehaviour {
 	[Range(0f, 5f)]
 	[SerializeField] float SceneResetTimer = 3f;
+	[SerializeField] AudioClip CrashExplosion = null;
+	[SerializeField] AudioClip SuccessFireworks = null;
 
 	Movement Movement;
 
@@ -20,16 +22,12 @@ public class CollisionHandler : MonoBehaviour {
 				break;
 			case "Finish":
 				if (collision.GetContact(0).thisCollider.transform.gameObject.name.Contains("Rocket Fin Stand")) {
-					Debug.Log($@"You finished the level!");
-					Movement.RemovePlayerControl();
-					StartCoroutine(LoadNextSceneAfterDelay(SceneResetTimer));
+					StartLevelCompleteSequence();
 				}
 				break;
 			default:
 				if (collision.GetContact(0).thisCollider.transform.gameObject.name.Contains("Rocket Fin Stand") == false) {
-					Debug.Log($@"{collision.gameObject.name} is an obstacle and you suck for hitting it.");
-					Movement.RemovePlayerControl();
-					StartCoroutine(ReloadSceneAfterDelay(SceneResetTimer));
+					StartCrashSequence();
 				}
 				break;
 		}
@@ -37,7 +35,6 @@ public class CollisionHandler : MonoBehaviour {
 
 	private void OnTriggerEnter(Collider other) {
 		if (other.CompareTag("Fuel")) {
-			Debug.Log($@"{other.gameObject.name} is fuel to keep you going.");
 			Destroy(other.gameObject);
 		}
 	}
@@ -56,5 +53,19 @@ public class CollisionHandler : MonoBehaviour {
 		yield return new WaitForSeconds(delay);
 
 		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+	}
+
+	void StartCrashSequence() {
+		Movement.RemovePlayerControl();
+		//Movement.enabled = false; // Rick's way of doing it
+		// TODO: Add SFX on crash
+		// TODO: Add VFX on crash
+		StartCoroutine(ReloadSceneAfterDelay(SceneResetTimer));
+	}
+
+	private void StartLevelCompleteSequence() {
+		Movement.RemovePlayerControl();
+		//Movement.enabled = false; // Rick's way of doing it
+		StartCoroutine(LoadNextSceneAfterDelay(SceneResetTimer));
 	}
 }

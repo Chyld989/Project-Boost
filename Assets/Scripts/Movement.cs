@@ -11,7 +11,7 @@ public class Movement : MonoBehaviour {
 	[SerializeField] AudioClip MainThruster = null;
 	[SerializeField] AudioClip AuxiliaryThruster = null;
 
-	bool HaveControl = true;
+	bool PlayerHasControl = true;
 
 	Rigidbody Rigidbody;
 	RigidbodyConstraints RigidbodyConstraints;
@@ -36,7 +36,7 @@ public class Movement : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update() {
-		if (HaveControl) {
+		if (PlayerHasControl) {
 			ProcessInput();
 		} else {
 			if (AudioSourceMainThruster.isPlaying) {
@@ -48,6 +48,10 @@ public class Movement : MonoBehaviour {
 		}
 	}
 
+	public void RemovePlayerControl() {
+		PlayerHasControl = false;
+	}
+
 	void ProcessInput() {
 		ProcessThrust();
 		ProcessRotation();
@@ -56,32 +60,32 @@ public class Movement : MonoBehaviour {
 	private void ProcessThrust() {
 		if (Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W)) {
 			Rigidbody.AddRelativeForce(Vector3.up * MainThrust * Time.deltaTime);
-			AudioSourceMainThruster.volume = 1;
+			AudioSourceMainThruster.volume = 1f;
 			if (AudioSourceMainThruster.isPlaying == false) {
 				AudioSourceMainThruster.Play();
 			}
 		} else {
 			// Used instead of .Stop() to avoid clicking sound at the end
-			AudioSourceMainThruster.volume = 0;
+			AudioSourceMainThruster.volume = 0f;
 		}
 	}
 
 	private void ProcessRotation() {
 		if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) {
 			ApplyRotation(RotationThrust);
-			AudioSourceAuxiliaryThruster.volume = 1;
+			AudioSourceAuxiliaryThruster.volume = 1f;
 			if (AudioSourceAuxiliaryThruster.isPlaying == false) {
 				AudioSourceAuxiliaryThruster.Play();
 			}
 		} else if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) {
 			ApplyRotation(RotationThrust * -1);
-			AudioSourceAuxiliaryThruster.volume = 1;
+			AudioSourceAuxiliaryThruster.volume = 1f;
 			if (AudioSourceAuxiliaryThruster.isPlaying == false) {
 				AudioSourceAuxiliaryThruster.Play();
 			}
 		} else {
 			// Used instead of .Stop() to avoid clicking sound at the end
-			AudioSourceAuxiliaryThruster.volume = 0;
+			AudioSourceAuxiliaryThruster.volume = 0f;
 		}
 	}
 
@@ -91,9 +95,5 @@ public class Movement : MonoBehaviour {
 		transform.Rotate(Vector3.forward * rotationThrust * Time.deltaTime);
 		// Re-enable physics based rotation
 		Rigidbody.constraints = RigidbodyConstraints;
-	}
-
-	public void RemovePlayerControl() {
-		HaveControl = false;
 	}
 }

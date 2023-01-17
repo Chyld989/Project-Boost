@@ -1722,6 +1722,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SceneResetTimer: 3
+  CrashExplosion: {fileID: 8300000, guid: e4b8a6c641c10334fa96dca8e464dc62, type: 3}
+  SuccessFireworks: {fileID: 8300000, guid: 4db84527e5b63054388acf4410ab3b54, type: 3}
 --- !u!1 &8337611720166069405
 GameObject:
   m_ObjectHideFlags: 0
