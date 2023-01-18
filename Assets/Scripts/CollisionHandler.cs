@@ -6,8 +6,10 @@ using UnityEngine.SceneManagement;
 public class CollisionHandler : MonoBehaviour {
 	[Range(0f, 5f)]
 	[SerializeField] float SceneResetTimer = 3f;
-	[SerializeField] AudioClip CrashExplosion = null;
-	[SerializeField] AudioClip SuccessFireworks = null;
+	[SerializeField] AudioClip CrashAudioClip = null;
+	[SerializeField] AudioClip SuccessAudioClip = null;
+	[SerializeField] ParticleSystem CrashParticles = null;
+	[SerializeField] ParticleSystem SuccessParticles = null;
 
 	float SceneCompleteTimer = 5f;
 
@@ -75,20 +77,20 @@ public class CollisionHandler : MonoBehaviour {
 
 	void StartCrashSequence() {
 		Movement.RemovePlayerControl();
-		if (Movement.IsPlayerAlive()) {
-			Movement.KillPlayer();
-			PlaySoundEffect(CrashExplosion);
-			// TODO: Add VFX on success
+		if (Movement.IsPlayerActive()) {
+			Movement.DeactivatePlayer();
+			PlaySoundEffect(CrashAudioClip);
+			CrashParticles.Play();
 			StartCoroutine(ReloadSceneAfterDelay(SceneResetTimer));
 		}
 	}
 
 	private void StartLevelCompleteSequence() {
 		Movement.RemovePlayerControl();
-		if (Movement.IsPlayerAlive()) {
-			Movement.KillPlayer();
-			PlaySoundEffect(SuccessFireworks);
-			// TODO: Add VFX on crash
+		if (Movement.IsPlayerActive()) {
+			Movement.DeactivatePlayer();
+			PlaySoundEffect(SuccessAudioClip);
+			SuccessParticles.Play();
 			StartCoroutine(LoadNextSceneAfterDelay(SceneCompleteTimer));
 		}
 	}

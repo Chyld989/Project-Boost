@@ -11,8 +11,15 @@ public class Movement : MonoBehaviour {
 	[SerializeField] AudioClip MainThruster = null;
 	[SerializeField] AudioClip AuxiliaryThruster = null;
 
+	[Header("Thruster Particle Effects")]
+	[SerializeField] ParticleSystem MainThrusterParticles = null;
+	[SerializeField] ParticleSystem TurnRightThruster1Particles = null;
+	[SerializeField] ParticleSystem TurnRightThruster2Particles = null;
+	[SerializeField] ParticleSystem TurnLeftThruster1Particles = null;
+	[SerializeField] ParticleSystem TurnLeftThruster2Particles = null;
+
 	bool PlayerHasControl = true;
-	bool IsAlive = true;
+	bool IsActive = true;
 
 	Rigidbody Rigidbody;
 	RigidbodyConstraints RigidbodyConstraints;
@@ -39,13 +46,18 @@ public class Movement : MonoBehaviour {
 	void Update() {
 		if (PlayerHasControl) {
 			ProcessInput();
-		} else if (IsAlive) {
+		} else if (IsActive) {
 			if (AudioSourceMainThruster.isPlaying) {
 				AudioSourceMainThruster.volume = 0f;
 			}
 			if (AudioSourceAuxiliaryThruster.isPlaying) {
 				AudioSourceAuxiliaryThruster.volume = 0f;
 			}
+			MainThrusterParticles.Stop();
+			TurnRightThruster1Particles.Stop();
+			TurnRightThruster2Particles.Stop();
+			TurnLeftThruster1Particles.Stop();
+			TurnLeftThruster2Particles.Stop();
 		}
 	}
 
@@ -53,12 +65,17 @@ public class Movement : MonoBehaviour {
 		PlayerHasControl = false;
 	}
 
-	public bool IsPlayerAlive() {
-		return IsAlive;
+	public bool IsPlayerActive() {
+		return IsActive;
 	}
 
-	public void KillPlayer() {
-		IsAlive = false;
+	public void DeactivatePlayer() {
+		IsActive = false;
+		MainThrusterParticles.Stop();
+		TurnRightThruster1Particles.Stop();
+		TurnRightThruster2Particles.Stop();
+		TurnLeftThruster1Particles.Stop();
+		TurnLeftThruster2Particles.Stop();
 	}
 
 	void ProcessInput() {
@@ -73,9 +90,13 @@ public class Movement : MonoBehaviour {
 			if (AudioSourceMainThruster.isPlaying == false) {
 				AudioSourceMainThruster.Play();
 			}
+			if (MainThrusterParticles.isPlaying == false) {
+				MainThrusterParticles.Play();
+			}
 		} else {
-			// Used instead of .Stop() to avoid clicking sound at the end
+			// Used instead of .Stop() on audio to avoid clicking sound at the end
 			AudioSourceMainThruster.volume = 0f;
+			MainThrusterParticles.Stop();
 		}
 	}
 
@@ -86,15 +107,31 @@ public class Movement : MonoBehaviour {
 			if (AudioSourceAuxiliaryThruster.isPlaying == false) {
 				AudioSourceAuxiliaryThruster.Play();
 			}
+			if (TurnLeftThruster1Particles.isPlaying == false) {
+				TurnLeftThruster1Particles.Play();
+			}
+			if (TurnLeftThruster2Particles.isPlaying == false) {
+				TurnLeftThruster2Particles.Play();
+			}
 		} else if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) {
 			ApplyRotation(RotationThrust * -1);
 			AudioSourceAuxiliaryThruster.volume = 1f;
 			if (AudioSourceAuxiliaryThruster.isPlaying == false) {
 				AudioSourceAuxiliaryThruster.Play();
 			}
+			if (TurnRightThruster1Particles.isPlaying == false) {
+				TurnRightThruster1Particles.Play();
+			}
+			if (TurnRightThruster2Particles.isPlaying == false) {
+				TurnRightThruster2Particles.Play();
+			}
 		} else {
-			// Used instead of .Stop() to avoid clicking sound at the end
+			// Used instead of .Stop() on audio to avoid clicking sound at the end
 			AudioSourceAuxiliaryThruster.volume = 0f;
+			TurnRightThruster1Particles.Stop();
+			TurnRightThruster2Particles.Stop();
+			TurnLeftThruster1Particles.Stop();
+			TurnLeftThruster2Particles.Stop();
 		}
 	}
 
