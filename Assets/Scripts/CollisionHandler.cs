@@ -9,24 +9,42 @@ public class CollisionHandler : MonoBehaviour {
 	[SerializeField] AudioClip CrashExplosion = null;
 	[SerializeField] AudioClip SuccessFireworks = null;
 
+	float SceneCompleteTimer = 5f;
+
 	Movement Movement;
+	AudioSource MainAudioSource;
+	AudioSource SecondaryAudioSource;
 
 	private void Start() {
 		Movement = GetComponent<Movement>();
+		foreach (var audioSource in GetComponents<AudioSource>()) {
+			if (MainAudioSource == null) {
+				MainAudioSource = audioSource;
+			} else {
+				SecondaryAudioSource = audioSource;
+			}
+		}
 	}
 
 	private void OnCollisionEnter(Collision collision) {
 		switch (collision.gameObject.tag) {
 			case "Friendly":
-				Debug.Log($@"{collision.gameObject.name} is friendly.");
+				if (collision.GetContact(0).thisCollider.transform.gameObject.name.Contains("Rocket Fin Stand") == false) {
+					// If anything other than the fins touches it's a crash
+					StartCrashSequence();
+				}
 				break;
 			case "Finish":
 				if (collision.GetContact(0).thisCollider.transform.gameObject.name.Contains("Rocket Fin Stand")) {
 					StartLevelCompleteSequence();
+				} else {
+					// If anything other than the fins touches it's a crash
+					StartCrashSequence();
 				}
 				break;
 			default:
 				if (collision.GetContact(0).thisCollider.transform.gameObject.name.Contains("Rocket Fin Stand") == false) {
+					// If anything other than the fins touches it's a crash
 					StartCrashSequence();
 				}
 				break;
@@ -57,15 +75,30 @@ public class CollisionHandler : MonoBehaviour {
 
 	void StartCrashSequence() {
 		Movement.RemovePlayerControl();
-		//Movement.enabled = false; // Rick's way of doing it
-		// TODO: Add SFX on crash
-		// TODO: Add VFX on crash
-		StartCoroutine(ReloadSceneAfterDelay(SceneResetTimer));
+		if (Movement.IsPlayerAlive()) {
+			Movement.KillPlayer();
+			PlaySoundEffect(CrashExplosion);
+			// TODO: Add VFX on success
+			StartCoroutine(ReloadSceneAfterDelay(SceneResetTimer));
+		}
 	}
 
 	private void StartLevelCompleteSequence() {
 		Movement.RemovePlayerControl();
-		//Movement.enabled = false; // Rick's way of doing it
-		StartCoroutine(LoadNextSceneAfterDelay(SceneResetTimer));
+		if (Movement.IsPlayerAlive()) {
+			Movement.KillPlayer();
+			PlaySoundEffect(SuccessFireworks);
+			// TODO: Add VFX on crash
+			StartCoroutine(LoadNextSceneAfterDelay(SceneCompleteTimer));
+		}
+	}
+
+	private void PlaySoundEffect(AudioClip audioClip) {
+		// Mute secondary audio source in case it's being used
+		SecondaryAudioSource.volume = 0f;
+		MainAudioSource.clip = audioClip;
+		MainAudioSource.loop = false;
+		MainAudioSource.volume = 1f;
+		MainAudioSource.Play();
 	}
 }

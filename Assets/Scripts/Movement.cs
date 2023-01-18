@@ -12,6 +12,7 @@ public class Movement : MonoBehaviour {
 	[SerializeField] AudioClip AuxiliaryThruster = null;
 
 	bool PlayerHasControl = true;
+	bool IsAlive = true;
 
 	Rigidbody Rigidbody;
 	RigidbodyConstraints RigidbodyConstraints;
@@ -38,7 +39,7 @@ public class Movement : MonoBehaviour {
 	void Update() {
 		if (PlayerHasControl) {
 			ProcessInput();
-		} else {
+		} else if (IsAlive) {
 			if (AudioSourceMainThruster.isPlaying) {
 				AudioSourceMainThruster.volume = 0f;
 			}
@@ -50,6 +51,14 @@ public class Movement : MonoBehaviour {
 
 	public void RemovePlayerControl() {
 		PlayerHasControl = false;
+	}
+
+	public bool IsPlayerAlive() {
+		return IsAlive;
+	}
+
+	public void KillPlayer() {
+		IsAlive = false;
 	}
 
 	void ProcessInput() {

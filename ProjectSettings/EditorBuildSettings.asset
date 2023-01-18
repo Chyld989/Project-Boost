@@ -6,6 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Just flying and landing.unity
+    guid: 76b5b077098f2ed498919b6645acce56
+  - enabled: 1
+    path: Assets/Scenes/Fly over.unity
+    guid: cb1b17ba08f4deb40844c0053761e333
+  - enabled: 1
+    path: Assets/Scenes/Fly under.unity
+    guid: f27f95769a6b6fb42b28748c66770196
+  - enabled: 1
     path: Assets/Scenes/Fly between.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   m_configObjects: {}
