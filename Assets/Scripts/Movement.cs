@@ -52,7 +52,7 @@ public class Movement : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update() {
-		if (LandingPad.GetComponent<MeshRenderer>().isVisible == false) {
+		if (LandingPadMeshRenderer.isVisible == false) {
 			DirectionalConeMeshRenderer.enabled = true;
 			DirectionalCone.transform.LookAt(LandingPad.transform);
 		} else {
