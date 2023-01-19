@@ -18,6 +18,9 @@ public class Movement : MonoBehaviour {
 	[SerializeField] ParticleSystem TurnLeftThruster1Particles = null;
 	[SerializeField] ParticleSystem TurnLeftThruster2Particles = null;
 
+	[SerializeField] GameObject DirectionalCone = null;
+	[SerializeField] GameObject LandingPad = null;
+
 	bool PlayerHasControl = true;
 	bool IsActive = true;
 
@@ -25,12 +28,17 @@ public class Movement : MonoBehaviour {
 	RigidbodyConstraints RigidbodyConstraints;
 	AudioSource AudioSourceMainThruster;
 	AudioSource AudioSourceAuxiliaryThruster;
+	MeshRenderer DirectionalConeMeshRenderer;
+	MeshRenderer LandingPadMeshRenderer;
 
 	// Start is called before the first frame update
 	void Start() {
 		Rigidbody = GetComponent<Rigidbody>();
 		RigidbodyConstraints = Rigidbody.constraints;
 
+		DirectionalConeMeshRenderer = DirectionalCone.GetComponent<MeshRenderer>();
+		LandingPadMeshRenderer = LandingPad.GetComponent<MeshRenderer>();
+		
 		foreach (var audioSource in GetComponents<AudioSource>()) {
 			if (AudioSourceMainThruster == null) {
 				AudioSourceMainThruster = audioSource;
@@ -44,6 +52,12 @@ public class Movement : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update() {
+		if (LandingPad.GetComponent<MeshRenderer>().isVisible == false) {
+			DirectionalConeMeshRenderer.enabled = true;
+			DirectionalCone.transform.LookAt(LandingPad.transform);
+		} else {
+			DirectionalConeMeshRenderer.enabled = false;
+		}
 		if (PlayerHasControl) {
 			ProcessInput();
 		} else if (IsActive) {
