@@ -52,12 +52,7 @@ public class Movement : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update() {
-		if (LandingPadMeshRenderer.isVisible == false) {
-			DirectionalConeMeshRenderer.enabled = true;
-			DirectionalCone.transform.LookAt(LandingPad.transform);
-		} else {
-			DirectionalConeMeshRenderer.enabled = false;
-		}
+		UpdateDirectionalCone();
 		if (PlayerHasControl) {
 			ProcessInput();
 		} else if (IsActive) {
@@ -73,6 +68,96 @@ public class Movement : MonoBehaviour {
 			TurnLeftThruster1Particles.Stop();
 			TurnLeftThruster2Particles.Stop();
 		}
+	}
+
+	void ProcessInput() {
+		ProcessThrust();
+		ProcessRotation();
+	}
+
+	private void ProcessThrust() {
+		if (Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W)) {
+			StartThrusting();
+		} else {
+			StopThrusting();
+		}
+	}
+
+	private void ProcessRotation() {
+		if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) {
+			RotateLeft();
+		} else if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) {
+			RotateRight();
+		} else {
+			StopRotating();
+		}
+	}
+
+	private void StartThrusting() {
+		Rigidbody.AddRelativeForce(Vector3.up * MainThrust * Time.deltaTime);
+		AudioSourceMainThruster.volume = 1f;
+		if (AudioSourceMainThruster.isPlaying == false) {
+			AudioSourceMainThruster.Play();
+		}
+		if (MainThrusterParticles.isPlaying == false) {
+			MainThrusterParticles.Play();
+		}
+	}
+
+	private void StopThrusting() {
+		// Used instead of .Stop() on audio to avoid clicking sound at the end
+		AudioSourceMainThruster.volume = 0f;
+		MainThrusterParticles.Stop();
+	}
+
+	private void RotateLeft() {
+		ApplyRotation(RotationThrust);
+		AudioSourceAuxiliaryThruster.volume = 1f;
+		if (AudioSourceAuxiliaryThruster.isPlaying == false) {
+			AudioSourceAuxiliaryThruster.Play();
+		}
+		if (TurnLeftThruster1Particles.isPlaying == false) {
+			TurnLeftThruster1Particles.Play();
+		}
+		if (TurnLeftThruster2Particles.isPlaying == false) {
+			TurnLeftThruster2Particles.Play();
+		}
+	}
+
+	private void RotateRight() {
+		ApplyRotation(RotationThrust * -1);
+		AudioSourceAuxiliaryThruster.volume = 1f;
+		if (AudioSourceAuxiliaryThruster.isPlaying == false) {
+			AudioSourceAuxiliaryThruster.Play();
+		}
+		if (TurnRightThruster1Particles.isPlaying == false) {
+			TurnRightThruster1Particles.Play();
+		}
+		if (TurnRightThruster2Particles.isPlaying == false) {
+			TurnRightThruster2Particles.Play();
+		}
+	}
+
+	private void StopRotating() {
+		// Used instead of .Stop() on audio to avoid clicking sound at the end
+		AudioSourceAuxiliaryThruster.volume = 0f;
+		TurnRightThruster1Particles.Stop();
+		TurnRightThruster2Particles.Stop();
+		TurnLeftThruster1Particles.Stop();
+		TurnLeftThruster2Particles.Stop();
+	}
+
+	private void ApplyRotation(float rotationThrust) {
+		// Freeze physics based rotation
+		Rigidbody.freezeRotation = true;
+		transform.Rotate(Vector3.forward * rotationThrust * Time.deltaTime);
+		// Re-enable physics based rotation
+		Rigidbody.constraints = RigidbodyConstraints;
+	}
+
+	private void UpdateDirectionalCone() {
+		DirectionalConeMeshRenderer.enabled = !MeshIsVisibleToCamera(Camera.main, LandingPadMeshRenderer);
+		DirectionalCone.transform.LookAt(LandingPad.transform);
 	}
 
 	public void RemovePlayerControl() {
@@ -92,68 +177,57 @@ public class Movement : MonoBehaviour {
 		TurnLeftThruster2Particles.Stop();
 	}
 
-	void ProcessInput() {
-		ProcessThrust();
-		ProcessRotation();
-	}
-
-	private void ProcessThrust() {
-		if (Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W)) {
-			Rigidbody.AddRelativeForce(Vector3.up * MainThrust * Time.deltaTime);
-			AudioSourceMainThruster.volume = 1f;
-			if (AudioSourceMainThruster.isPlaying == false) {
-				AudioSourceMainThruster.Play();
-			}
-			if (MainThrusterParticles.isPlaying == false) {
-				MainThrusterParticles.Play();
-			}
-		} else {
-			// Used instead of .Stop() on audio to avoid clicking sound at the end
-			AudioSourceMainThruster.volume = 0f;
-			MainThrusterParticles.Stop();
+	private bool MeshIsVisibleToCamera(Camera camera, Renderer renderer) {
+		// Taken from https://community.gamedev.tv/t/meshrenderer-isvisible-issues/219395/5 by bixarrio
+		// If the renderer's pivot is in view we should be okay
+		var viewPos = camera.WorldToViewportPoint(renderer.transform.position);
+		if (viewPos.x >= 0 && viewPos.y >= 0 && viewPos.x <= 1 && viewPos.y <= 1) {
+			return true;
 		}
+
+		// If pivot is not in view the mesh may still have some bits that are visible
+		var bounds = renderer.bounds;
+
+		// Check each of the points and see if any is visible
+		// Helper constants
+		const int LEFT = -1;
+		const int RIGHT = 1;
+		const int TOP = 1;
+		const int BOTTOM = -1;
+		const int FRONT = -1;
+		const int BACK = 1;
+
+		// Left bottom front
+		if (PointIsVisible(LEFT, BOTTOM, FRONT, camera, bounds)) { return true; }
+		// Left top front
+		if (PointIsVisible(LEFT, TOP, FRONT, camera, bounds)) { return true; }
+		// Left bottom back
+		if (PointIsVisible(LEFT, BOTTOM, BACK, camera, bounds)) { return true; }
+		// Left top back
+		if (PointIsVisible(LEFT, TOP, BACK, camera, bounds)) { return true; }
+		// Right bottom front
+		if (PointIsVisible(RIGHT, BOTTOM, FRONT, camera, bounds)) { return true; }
+		// Right top front
+		if (PointIsVisible(RIGHT, TOP, FRONT, camera, bounds)) { return true; }
+		// Right bottom back
+		if (PointIsVisible(RIGHT, BOTTOM, BACK, camera, bounds)) { return true; }
+		// Right top back
+		if (PointIsVisible(RIGHT, TOP, BACK, camera, bounds)) { return true; }
+
+		// If none of those are visible, we're likely not visible
+		return false;
 	}
 
-	private void ProcessRotation() {
-		if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) {
-			ApplyRotation(RotationThrust);
-			AudioSourceAuxiliaryThruster.volume = 1f;
-			if (AudioSourceAuxiliaryThruster.isPlaying == false) {
-				AudioSourceAuxiliaryThruster.Play();
-			}
-			if (TurnLeftThruster1Particles.isPlaying == false) {
-				TurnLeftThruster1Particles.Play();
-			}
-			if (TurnLeftThruster2Particles.isPlaying == false) {
-				TurnLeftThruster2Particles.Play();
-			}
-		} else if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) {
-			ApplyRotation(RotationThrust * -1);
-			AudioSourceAuxiliaryThruster.volume = 1f;
-			if (AudioSourceAuxiliaryThruster.isPlaying == false) {
-				AudioSourceAuxiliaryThruster.Play();
-			}
-			if (TurnRightThruster1Particles.isPlaying == false) {
-				TurnRightThruster1Particles.Play();
-			}
-			if (TurnRightThruster2Particles.isPlaying == false) {
-				TurnRightThruster2Particles.Play();
-			}
-		} else {
-			// Used instead of .Stop() on audio to avoid clicking sound at the end
-			AudioSourceAuxiliaryThruster.volume = 0f;
-			TurnRightThruster1Particles.Stop();
-			TurnRightThruster2Particles.Stop();
-			TurnLeftThruster1Particles.Stop();
-			TurnLeftThruster2Particles.Stop();
-		}
+	// All the duplicated code in one place
+	bool PointIsVisible(int xDir, int yDir, int zDir, Camera camera, Bounds bounds) {
+		var point = GetPoint(xDir, yDir, zDir, bounds);
+		var localViewPos = camera.WorldToViewportPoint(point);
+		return (localViewPos.x >= 0 && localViewPos.y >= 0 && localViewPos.x <= 1 && localViewPos.y <= 1);
 	}
 
-	private void ApplyRotation(float rotationThrust) {
-		// Freeze physics based rotation
-		Rigidbody.freezeRotation = true;
-		transform.Rotate(Vector3.forward * rotationThrust * Time.deltaTime);
-		// Re-enable physics based rotation
-		Rigidbody.constraints = RigidbodyConstraints;
-	}
+	// Just a simple helper to get the points I want
+	Vector3 GetPoint(int xDir, int yDir, int zDir, Bounds bounds) => new Vector3(
+		bounds.center.x + (bounds.extents.x * xDir),
+		bounds.center.y + (bounds.extents.y * yDir),
+		bounds.center.z + (bounds.extents.z * zDir));
 }

@@ -12,6 +12,7 @@ public class CollisionHandler : MonoBehaviour {
 	[SerializeField] ParticleSystem SuccessParticles = null;
 
 	float SceneCompleteTimer = 5f;
+	bool IsCollisionDisabled = false;
 
 	Movement Movement;
 	AudioSource MainAudioSource;
@@ -28,7 +29,24 @@ public class CollisionHandler : MonoBehaviour {
 		}
 	}
 
+	public void LoadNextScene() {
+		StartCoroutine(LoadNextSceneAfterDelay(0));
+	}
+
+	public void LoadPreviousScene() {
+		StartCoroutine(LoadPreviousSceneAfterDelay(0));
+	}
+
+	public void ReloadScene() {
+		StartCoroutine(ReloadSceneAfterDelay(0));
+	}
+
+	public void ToggleCollision() {
+		IsCollisionDisabled = !IsCollisionDisabled;
+	}
+
 	private void OnCollisionEnter(Collision collision) {
+		if (IsCollisionDisabled) { return; }
 		switch (collision.gameObject.tag) {
 			case "Friendly":
 				if (collision.GetContact(0).thisCollider.transform.gameObject.name.Contains("Rocket Fin Stand") == false) {
@@ -67,6 +85,16 @@ public class CollisionHandler : MonoBehaviour {
 			nextSceneIndex = 0;
 		}
 		SceneManager.LoadScene(nextSceneIndex);
+	}
+
+	IEnumerator LoadPreviousSceneAfterDelay(float delay) {
+		yield return new WaitForSeconds(delay);
+
+		var previousSceneIndex = SceneManager.GetActiveScene().buildIndex - 1;
+		if (previousSceneIndex < 0) {
+			previousSceneIndex = SceneManager.sceneCountInBuildSettings - 1;
+		}
+		SceneManager.LoadScene(previousSceneIndex);
 	}
 
 	IEnumerator ReloadSceneAfterDelay(float delay) {

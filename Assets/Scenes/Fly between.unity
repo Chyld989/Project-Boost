@@ -573,10 +573,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5136997824475320956, guid: a30aa6bbede2aaf45b8e7cc946112bad, type: 3}
-      propertyPath: DirectionalCone
-      value: 
-      objectReference: {fileID: 19156375374030010}
-    - target: {fileID: 5136997824475320956, guid: a30aa6bbede2aaf45b8e7cc946112bad, type: 3}
       propertyPath: LandingPad
       value: 
       objectReference: {fileID: 8762104832156036794}
@@ -586,11 +582,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a30aa6bbede2aaf45b8e7cc946112bad, type: 3}
---- !u!1 &19156375374030010 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4857723807805169891, guid: a30aa6bbede2aaf45b8e7cc946112bad, type: 3}
-  m_PrefabInstance: {fileID: 19156375374030009}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &552047635823729174
 PrefabInstance:
   m_ObjectHideFlags: 0
