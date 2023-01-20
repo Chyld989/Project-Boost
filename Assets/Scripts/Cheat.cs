@@ -24,5 +24,6 @@ public class Cheat : MonoBehaviour {
 		} else if (Input.GetKeyDown(KeyCode.N)) {
 			CollisionHandler.LoadNextScene();
 		}
+		// Add level select option (press 1 to load first level, 2 to load second, etc)?
 	}
 }
