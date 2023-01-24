@@ -6,30 +6,33 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Just flying and landing.unity
+    path: Assets/Scenes/000 Just flying and landing.unity
     guid: 76b5b077098f2ed498919b6645acce56
   - enabled: 1
-    path: Assets/Scenes/Fly over.unity
+    path: Assets/Scenes/010 Fly over.unity
     guid: cb1b17ba08f4deb40844c0053761e333
   - enabled: 1
-    path: Assets/Scenes/Fly under.unity
+    path: Assets/Scenes/020 Fly under.unity
     guid: f27f95769a6b6fb42b28748c66770196
   - enabled: 1
-    path: Assets/Scenes/Fly over then under.unity
+    path: Assets/Scenes/030 Fly over then under.unity
     guid: baf25c147e2c34148aa3290403d73bc0
   - enabled: 1
-    path: Assets/Scenes/Fly between.unity
+    path: Assets/Scenes/040 Fly between.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
-    path: Assets/Scenes/Fly diagonal.unity
+    path: Assets/Scenes/050 Fly diagonal.unity
     guid: 5bf672e55c574f94192473b82c953031
   - enabled: 1
-    path: Assets/Scenes/Over Under Over Under On.unity
+    path: Assets/Scenes/060 Over Under Over Under On.unity
     guid: e6e4a72ddba71954294622fdb35569a5
   - enabled: 1
-    path: Assets/Scenes/Mini Maze.unity
+    path: Assets/Scenes/070 Mini Maze.unity
     guid: 7535ae880f7f05a4e8a45644789f7a86
   - enabled: 1
-    path: Assets/Scenes/Medium Maze.unity
+    path: Assets/Scenes/080 Medium Maze.unity
     guid: 0cbe1c767377a8340860ced610baddda
+  - enabled: 1
+    path: Assets/Scenes/090 Moving blocks.unity
+    guid: 946f33c744ccaf5469b54f31b17c4b1e
   m_configObjects: {}
