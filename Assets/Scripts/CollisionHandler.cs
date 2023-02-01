@@ -19,6 +19,7 @@ public class CollisionHandler : MonoBehaviour {
 	AudioSource SecondaryAudioSource;
 
 	private void Start() {
+		SetGravity();
 		Movement = GetComponent<Movement>();
 		foreach (var audioSource in GetComponents<AudioSource>()) {
 			if (MainAudioSource == null) {
@@ -26,6 +27,18 @@ public class CollisionHandler : MonoBehaviour {
 			} else {
 				SecondaryAudioSource = audioSource;
 			}
+		}
+	}
+
+	private static void SetGravity() {
+		if (SceneManager.GetActiveScene().name == "100 Fight against wind") {
+			Physics.gravity = new Vector3(1f, -9.81f, 0);
+		} else if (SceneManager.GetActiveScene().name == "110 Fight against a strong wind") {
+			Physics.gravity = new Vector3(2f, -9.81f, 0);
+		} else if (SceneManager.GetActiveScene().name == "120 Fight against a downward wind") {
+			Physics.gravity = new Vector3(0f, -13f, 0);
+		} else {
+			Physics.gravity = new Vector3(0, -9.81f, 0);
 		}
 	}
 

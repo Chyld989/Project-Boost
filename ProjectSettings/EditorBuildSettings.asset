@@ -35,4 +35,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/090 Moving blocks.unity
     guid: 946f33c744ccaf5469b54f31b17c4b1e
+  - enabled: 1
+    path: Assets/Scenes/100 Fight against wind.unity
+    guid: 0a820625e807f2a45abd1ce369aa167a
+  - enabled: 1
+    path: Assets/Scenes/110 Fight against a strong wind.unity
+    guid: a7443795d58db8049b4ecd99059a2ced
+  - enabled: 1
+    path: Assets/Scenes/120 Fight against a downward wind.unity
+    guid: c4bf25b3005371c4fb648e1aa660ee54
   m_configObjects: {}
