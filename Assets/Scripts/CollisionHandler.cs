@@ -75,6 +75,9 @@ public class CollisionHandler : MonoBehaviour {
 					StartCrashSequence();
 				}
 				break;
+			case "Annoyance":
+				// Sole purpose is to screw up flight patterns when hit, not fail the level
+				break;
 			default:
 				if (collision.GetContact(0).thisCollider.transform.gameObject.name.Contains("Rocket Fin Stand") == false) {
 					// If anything other than the fins touches it's a crash
