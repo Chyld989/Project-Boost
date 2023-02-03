@@ -17,10 +17,14 @@ public class CollisionHandler : MonoBehaviour {
 	Movement Movement;
 	AudioSource MainAudioSource;
 	AudioSource SecondaryAudioSource;
+	AsteroidSpawner AsteroidSpawner = null;
 
 	private void Start() {
 		SetGravity();
 		Movement = GetComponent<Movement>();
+		if (SceneManager.GetActiveScene().name.Contains("Asteroids")) {
+			AsteroidSpawner = GameObject.FindGameObjectWithTag("World").GetComponent<AsteroidSpawner>();
+		}
 		foreach (var audioSource in GetComponents<AudioSource>()) {
 			if (MainAudioSource == null) {
 				MainAudioSource = audioSource;
@@ -132,6 +136,9 @@ public class CollisionHandler : MonoBehaviour {
 	private void StartLevelCompleteSequence() {
 		Movement.RemovePlayerControl();
 		if (Movement.IsPlayerActive()) {
+			if (AsteroidSpawner != null) {
+				AsteroidSpawner.StopSpawning();
+			}
 			Movement.DeactivatePlayer();
 			PlaySoundEffect(SuccessAudioClip);
 			SuccessParticles.Play();

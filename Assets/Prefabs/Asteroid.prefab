@@ -542,8 +542,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be10c599e5748654c9f687c3077a21e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CrashAudioClip: {fileID: 0}
+  CrashAudioClips:
+  - {fileID: 8300000, guid: 8321084f83ddcec41928d36ced9cdbc1, type: 3}
+  - {fileID: 8300000, guid: 300eab2d01e39a540b600b3441113d5d, type: 3}
+  - {fileID: 8300000, guid: 6ba49bc13d10b5642be112d47f74c78e, type: 3}
+  - {fileID: 8300000, guid: 3fca2fd585033b344a0f4801ad6b42d4, type: 3}
+  - {fileID: 8300000, guid: 7c1c1552ab76e40489a9b32ed4c2fce3, type: 3}
+  - {fileID: 8300000, guid: 8f2af965582a728419b177ea4e84582a, type: 3}
   CrashParticles: {fileID: 6377599840909047032}
+  ScaleDurationInSeconds: 2.5
 --- !u!1001 &6503729379090807352
 PrefabInstance:
   m_ObjectHideFlags: 0

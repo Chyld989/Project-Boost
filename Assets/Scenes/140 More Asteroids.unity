@@ -595,7 +595,7 @@ MonoBehaviour:
   MaxLaunchForceX: 1000
   MinLaunchForceY: -200
   MaxLaunchForceY: -1000
-  SpawnTimerInSeconds: 4
+  SpawnTimerInSeconds: 2
   AsteroidToSpawn: {fileID: 6503729379101130400, guid: b62737ecfab9faa4ca10a121a046e179, type: 3}
 --- !u!1001 &1765469146
 PrefabInstance:

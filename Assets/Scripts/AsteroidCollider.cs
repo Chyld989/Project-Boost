@@ -3,20 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class AsteroidCollider : MonoBehaviour {
-	[SerializeField] AudioClip CrashAudioClip = null;
+	[SerializeField] List<AudioClip> CrashAudioClips = null;
 	[SerializeField] ParticleSystem CrashParticles = null;
-	[SerializeField] float ScaleDuration = 2.5f;
+	[SerializeField] float ScaleDurationInSeconds = 2.5f;
 
 	bool Crashed = false;
 
 	List<GameObject> AsteroidParts = new List<GameObject>();
+	AudioSource AudioSource;
 
 	private void Start() {
+		AudioSource = GetComponent<AudioSource>();
 		for (int c = 0; c < transform.childCount; c++) {
 			if (transform.GetChild(c).gameObject.name.Contains("Asteroid Part")) {
 				AsteroidParts.Add(transform.GetChild(c).gameObject);
 			}
 		}
+	}
+
+	public void AddForce(float xForce, float yForce, float zForce) {
+		gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(xForce, yForce, zForce));
 	}
 
 	private void OnCollisionEnter(Collision collision) {
@@ -28,7 +34,13 @@ public class AsteroidCollider : MonoBehaviour {
 	private void Explode() {
 		Crashed = true;
 		CrashParticles.Play();
+		PlayCrashAudio();
 		SpreadParts();
+	}
+
+	private void PlayCrashAudio() {
+		AudioSource.clip = CrashAudioClips[Random.Range(0, CrashAudioClips.Count)];
+		AudioSource.Play();
 	}
 
 	private void SpreadParts() {
@@ -42,9 +54,9 @@ public class AsteroidCollider : MonoBehaviour {
 			if (FlipCoin()) { newZ *= -1; }
 			part.GetComponent<Rigidbody>().AddForce(new Vector3(newX, newY, newZ));
 			part.tag = "Annoyance";
-			ScaleToTarget(part, new Vector3(0f, 0f, 0f), ScaleDuration);
+			ScaleToTarget(part, new Vector3(0f, 0f, 0f), ScaleDurationInSeconds);
 		}
-		Destroy(gameObject, ScaleDuration + 1f);
+		Destroy(gameObject, ScaleDurationInSeconds + 1f);
 	}
 
 	private void ScaleToTarget(GameObject gameObject, Vector3 targetScale, float duration) {
