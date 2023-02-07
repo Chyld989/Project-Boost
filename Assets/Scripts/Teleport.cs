@@ -7,11 +7,12 @@ public class Teleport : MonoBehaviour {
 	[SerializeField] GameObject TeleportPartner = null;
 	[SerializeField] GameObject Rocket = null;
 	[SerializeField] GameObject RocketLaunchPad = null;
-	[SerializeField] bool ActivateTheBubble = false;
 
 	GameObject TeleportBubble;
 	AudioSource AudioSource;
 	Teleport TeleportPartnerScript;
+	Movement RocketMovement;
+	bool ActivateTheBubble = false;
 	bool BubbleActivated = false;
 	bool SendingPad = false;
 	float StartTime = 0f;
@@ -38,16 +39,18 @@ public class Teleport : MonoBehaviour {
 		TeleportY = RocketOffsetY + TeleportPartner.transform.position.y;
 		TeleportZ = TeleportPartner.transform.position.z;
 		TeleportPartnerScript = TeleportPartner.GetComponent<Teleport>();
+		AudioSource = GetComponent<AudioSource>();
+		RocketMovement = Rocket.GetComponent<Movement>();
 	}
 
 	// Update is called once per frame
 	void Update() {
-		// TODO: Don't allow activation if the rocket is crashed
 		if (ActivateTheBubble) {
 			ActivateTheBubble = false;
 			BubbleActivated = true;
 			TeleportPartnerScript.SetSendingPad(false);
 			TeleportPartnerScript.StartTeleportation();
+			AudioSource.Play();
 			StartTime = Time.time;
 		}
 		if (BubbleActivated) {
@@ -59,6 +62,7 @@ public class Teleport : MonoBehaviour {
 			if (curBubbleScale >= BubbleSize - 1) {
 				if (SendingPad == false) {
 					SendingPad = true;
+					Rocket.transform.rotation = new Quaternion(0f, 0f, 0f, 0f);
 					Rocket.transform.position = new Vector3(TeleportX, TeleportY, TeleportZ);
 				}
 			}
@@ -66,7 +70,7 @@ public class Teleport : MonoBehaviour {
 	}
 
 	public void StartTeleportation() {
-		if (BubbleActivated == false) {
+		if (BubbleActivated == false && RocketMovement.IsPlayerActive()) {
 			ActivateTheBubble = true;
 			SetSendingPad(true);
 		}

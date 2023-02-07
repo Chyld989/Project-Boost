@@ -13,6 +13,7 @@ public class CollisionHandler : MonoBehaviour {
 
 	float SceneCompleteTimer = 5f;
 	bool IsCollisionDisabled = false;
+	int RocketFinsOnGround = 0;
 
 	Movement Movement;
 	AudioSource MainAudioSource;
@@ -62,6 +63,16 @@ public class CollisionHandler : MonoBehaviour {
 		IsCollisionDisabled = !IsCollisionDisabled;
 	}
 
+	private void OnCollisionExit(Collision collision) {
+		if (IsCollisionDisabled) { return; }
+		switch (collision.gameObject.tag) {
+			case "Teleport":
+			case "Finish":
+				RocketFinsOnGround--;
+				break;
+		}
+	}
+
 	private void OnCollisionEnter(Collision collision) {
 		if (IsCollisionDisabled) { return; }
 		switch (collision.gameObject.tag) {
@@ -76,15 +87,21 @@ public class CollisionHandler : MonoBehaviour {
 					// If anything other than the fins touches it's a crash
 					StartCrashSequence();
 				} else {
-					collision.gameObject.transform.parent.GetComponentInParent<Teleport>().StartTeleportation();
+					RocketFinsOnGround++;
+					if (RocketFinsOnGround > 1) {
+						collision.gameObject.transform.parent.GetComponentInParent<Teleport>().StartTeleportation();
+					}
 				}
 				break;
 			case "Finish":
-				if (collision.GetContact(0).thisCollider.transform.gameObject.name.Contains("Rocket Fin Stand")) {
-					StartLevelCompleteSequence();
-				} else {
+				if (collision.GetContact(0).thisCollider.transform.gameObject.name.Contains("Rocket Fin Stand") == false) {
 					// If anything other than the fins touches it's a crash
 					StartCrashSequence();
+				} else {
+					RocketFinsOnGround++;
+					if (RocketFinsOnGround > 1) {
+						StartLevelCompleteSequence();
+					}
 				}
 				break;
 			case "Annoyance":

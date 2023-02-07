@@ -18,6 +18,13 @@ public class Movement : MonoBehaviour {
 	[SerializeField] ParticleSystem TurnLeftThruster1Particles = null;
 	[SerializeField] ParticleSystem TurnLeftThruster2Particles = null;
 
+	[Header("Thruster Lights")]
+	[SerializeField] Light MainThrusterLight = null;
+	[SerializeField] Light TurnRightThruster1Light = null;
+	[SerializeField] Light TurnRightThruster2Light = null;
+	[SerializeField] Light TurnLeftThruster1Light = null;
+	[SerializeField] Light TurnLeftThruster2Light = null;
+
 	[SerializeField] GameObject DirectionalCone = null;
 	[SerializeField] GameObject LandingPad = null;
 
@@ -102,12 +109,14 @@ public class Movement : MonoBehaviour {
 		if (MainThrusterParticles.isPlaying == false) {
 			MainThrusterParticles.Play();
 		}
+		MainThrusterLight.enabled = true;
 	}
 
 	private void StopThrusting() {
 		// Used instead of .Stop() on audio to avoid clicking sound at the end
 		AudioSourceMainThruster.volume = 0f;
 		MainThrusterParticles.Stop();
+		MainThrusterLight.enabled = false;
 	}
 
 	private void RotateLeft() {
@@ -119,9 +128,11 @@ public class Movement : MonoBehaviour {
 		if (TurnLeftThruster1Particles.isPlaying == false) {
 			TurnLeftThruster1Particles.Play();
 		}
+		TurnLeftThruster1Light.enabled = true;
 		if (TurnLeftThruster2Particles.isPlaying == false) {
 			TurnLeftThruster2Particles.Play();
 		}
+		TurnLeftThruster2Light.enabled = true;
 	}
 
 	private void RotateRight() {
@@ -133,18 +144,24 @@ public class Movement : MonoBehaviour {
 		if (TurnRightThruster1Particles.isPlaying == false) {
 			TurnRightThruster1Particles.Play();
 		}
+		TurnRightThruster1Light.enabled = true;
 		if (TurnRightThruster2Particles.isPlaying == false) {
 			TurnRightThruster2Particles.Play();
 		}
+		TurnRightThruster2Light.enabled = true;
 	}
 
 	private void StopRotating() {
 		// Used instead of .Stop() on audio to avoid clicking sound at the end
 		AudioSourceAuxiliaryThruster.volume = 0f;
 		TurnRightThruster1Particles.Stop();
+		TurnRightThruster1Light.enabled = false;
 		TurnRightThruster2Particles.Stop();
+		TurnRightThruster2Light.enabled = false;
 		TurnLeftThruster1Particles.Stop();
+		TurnLeftThruster1Light.enabled = false;
 		TurnLeftThruster2Particles.Stop();
+		TurnLeftThruster2Light.enabled = false;
 	}
 
 	private void ApplyRotation(float rotationThrust) {
@@ -170,11 +187,8 @@ public class Movement : MonoBehaviour {
 
 	public void DeactivatePlayer() {
 		IsActive = false;
-		MainThrusterParticles.Stop();
-		TurnRightThruster1Particles.Stop();
-		TurnRightThruster2Particles.Stop();
-		TurnLeftThruster1Particles.Stop();
-		TurnLeftThruster2Particles.Stop();
+		StopThrusting();
+		StopRotating();
 	}
 
 	private bool MeshIsVisibleToCamera(Camera camera, Renderer renderer) {

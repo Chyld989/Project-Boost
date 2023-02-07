@@ -493,6 +493,14 @@ PrefabInstance:
       propertyPath: Rocket
       value: 
       objectReference: {fileID: 2032325834}
+    - target: {fileID: 2768827751097768671, guid: 31b8d32c755ea6d449ea414c8f50facd, type: 3}
+      propertyPath: RocketLaunchPad
+      value: 
+      objectReference: {fileID: 1643263568}
+    - target: {fileID: 2768827751097768671, guid: 31b8d32c755ea6d449ea414c8f50facd, type: 3}
+      propertyPath: TeleportAudio
+      value: 
+      objectReference: {fileID: 8300000, guid: 8388f106657a4714485b5c04213b4686, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 31b8d32c755ea6d449ea414c8f50facd, type: 3}
 --- !u!1 &963194225
@@ -724,6 +732,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1643263568 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 552047636108989983, guid: 746c373d6899e884e83bcf79c4cf7c64, type: 3}
+  m_PrefabInstance: {fileID: 552047635823729174}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1765469146
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -988,6 +1001,14 @@ PrefabInstance:
       propertyPath: Rocket
       value: 
       objectReference: {fileID: 2032325834}
+    - target: {fileID: 2768827751097768671, guid: 31b8d32c755ea6d449ea414c8f50facd, type: 3}
+      propertyPath: RocketLaunchPad
+      value: 
+      objectReference: {fileID: 1643263568}
+    - target: {fileID: 2768827751097768671, guid: 31b8d32c755ea6d449ea414c8f50facd, type: 3}
+      propertyPath: TeleportAudio
+      value: 
+      objectReference: {fileID: 8300000, guid: 8388f106657a4714485b5c04213b4686, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 31b8d32c755ea6d449ea414c8f50facd, type: 3}
 --- !u!1001 &3723956169712605251
