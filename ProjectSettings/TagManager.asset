@@ -8,6 +8,7 @@ TagManager:
   - Fuel
   - Annoyance
   - World
+  - Teleport
   layers:
   - Default
   - TransparentFX

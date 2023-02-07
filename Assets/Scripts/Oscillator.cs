@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Oscillator : MonoBehaviour {
-	[SerializeField] Vector3 MovementVector;
+	[SerializeField] Vector3 MovementVector = new Vector3(0, 0, 0);
 	[SerializeField] float Period = 5f;
 	[SerializeField] [Range(0, 1)] float StartingMovementFactor = 0f;
 

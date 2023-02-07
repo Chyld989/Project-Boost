@@ -71,6 +71,14 @@ public class CollisionHandler : MonoBehaviour {
 					StartCrashSequence();
 				}
 				break;
+			case "Teleport":
+				if (collision.GetContact(0).thisCollider.transform.gameObject.name.Contains("Rocket Fin Stand") == false) {
+					// If anything other than the fins touches it's a crash
+					StartCrashSequence();
+				} else {
+					collision.gameObject.transform.parent.GetComponentInParent<Teleport>().StartTeleportation();
+				}
+				break;
 			case "Finish":
 				if (collision.GetContact(0).thisCollider.transform.gameObject.name.Contains("Rocket Fin Stand")) {
 					StartLevelCompleteSequence();
