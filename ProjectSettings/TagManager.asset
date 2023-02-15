@@ -9,6 +9,7 @@ TagManager:
   - Annoyance
   - World
   - Teleport
+  - Gravity
   layers:
   - Default
   - TransparentFX

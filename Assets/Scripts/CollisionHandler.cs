@@ -14,6 +14,10 @@ public class CollisionHandler : MonoBehaviour {
 	float SceneCompleteTimer = 5f;
 	bool IsCollisionDisabled = false;
 	int RocketFinsOnGround = 0;
+	static Vector3 NormalGravity = new Vector3(0f, -9.81f, 0f);
+	static Vector3 LightLeftToRightWindGravity = new Vector3(1f, -9.81f, 0f);
+	static Vector3 StrongLeftToRightWindGravity = new Vector3(2f, -9.81f, 0f);
+	static Vector3 StrongDownwardWindGravity = new Vector3(0f, -13f, 0f);
 
 	Movement Movement;
 	AudioSource MainAudioSource;
@@ -37,13 +41,13 @@ public class CollisionHandler : MonoBehaviour {
 
 	private static void SetGravity() {
 		if (SceneManager.GetActiveScene().name == "100 Fight against wind") {
-			Physics.gravity = new Vector3(1f, -9.81f, 0);
+			Physics.gravity = LightLeftToRightWindGravity;
 		} else if (SceneManager.GetActiveScene().name == "110 Fight against a strong wind") {
-			Physics.gravity = new Vector3(2f, -9.81f, 0);
+			Physics.gravity = StrongLeftToRightWindGravity;
 		} else if (SceneManager.GetActiveScene().name == "120 Fight against a downward wind") {
-			Physics.gravity = new Vector3(0f, -13f, 0);
+			Physics.gravity = StrongDownwardWindGravity;
 		} else {
-			Physics.gravity = new Vector3(0, -9.81f, 0);
+			Physics.gravity = NormalGravity;
 		}
 	}
 
@@ -119,6 +123,14 @@ public class CollisionHandler : MonoBehaviour {
 	private void OnTriggerEnter(Collider other) {
 		if (other.CompareTag("Fuel")) {
 			Destroy(other.gameObject);
+		} else if (other.gameObject.tag == "Gravity") {
+			Physics.gravity = LightLeftToRightWindGravity;
+		}
+	}
+
+	private void OnTriggerExit(Collider other) {
+		if (other.gameObject.tag == "Gravity") {
+			Physics.gravity = NormalGravity;
 		}
 	}
 

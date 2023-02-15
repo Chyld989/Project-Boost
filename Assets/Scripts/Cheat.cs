@@ -23,6 +23,8 @@ public class Cheat : MonoBehaviour {
 			CollisionHandler.ReloadScene();
 		} else if (Input.GetKeyDown(KeyCode.N)) {
 			CollisionHandler.LoadNextScene();
+		} else if (Input.GetKeyDown(KeyCode.Z)) {
+			transform.Rotate(new Vector3(0, 0, transform.rotation.z));
 		}
 		// Add level select option (press 1 to load first level, 2 to load second, etc)?
 	}

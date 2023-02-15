@@ -169,6 +169,7 @@ public class Movement : MonoBehaviour {
 		Rigidbody.freezeRotation = true;
 		transform.Rotate(Vector3.forward * rotationThrust * Time.deltaTime);
 		// Re-enable physics based rotation
+		//transform.Rotate(new Vector3(0, 0, transform.rotation.z));
 		Rigidbody.constraints = RigidbodyConstraints;
 	}
 
