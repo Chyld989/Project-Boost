@@ -77,4 +77,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/230 The Grand Finale.unity
     guid: fd45e04b246822245bb23793b48a930c
+  - enabled: 1
+    path: Assets/Scenes/999 You Win.unity
+    guid: e3724cf9225556f439bb8091d9874e87
   m_configObjects: {}
